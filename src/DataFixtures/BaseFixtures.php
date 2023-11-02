@@ -20,7 +20,7 @@ class BaseFixtures extends Fixture
             ->setStatus(StatusType::OPEN)
             ->setCreator($user);
 
-        $supportCaseClosed = (new SupportCase())->setSummary('Mega Super Problem')
+        $supportCaseClosed = (new SupportCase())->setSummary('Not Critical Problem')
             ->setImageUrl('https://www.sciencenews.org/wp-content/uploads/2022/11/Hubble-Pillars-of-Creation.jpg')
             ->setDescription('Warranty eligibility issues')
             ->setStatus(StatusType::FIXED)
