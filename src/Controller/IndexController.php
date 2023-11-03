@@ -17,7 +17,7 @@ class IndexController extends AbstractController
     {
     }
 
-    #[Route('/', name: 'app_support', methods: Request::METHOD_GET)]
+    #[Route('/cases', name: 'app_support', methods: Request::METHOD_GET)]
     public function indexAction(): Response
     {
         return $this->render('support/index.html.twig', [

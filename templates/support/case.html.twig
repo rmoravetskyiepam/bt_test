@@ -3,26 +3,24 @@
 {% block title %}Support Portal{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <table class="table table-striped align-middle">
-                <thead>
-                <tr>
-                    <th>Summary</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Screenshot</th>
-                </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                <tr>
-                    <td>{{ supportCase.summary }}</td>
-                    <td>{{ supportCase.description }}</td>
-                    <td>{{ supportCase.status.value }}</td>
-                    <td class="rounded mx-auto d-block"><img style="width: 180px;height: 150px" src="{{ supportCase.imageUrl }}" alt="Not Loaded"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+    <div class="row">
+        <table class="table table-striped align-middle">
+            <thead>
+            <tr>
+                <th>Summary</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Screenshot</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            <tr>
+                <td>{{ supportCase.summary }}</td>
+                <td>{{ supportCase.description }}</td>
+                <td>{{ supportCase.status.value }}</td>
+                <td class="rounded mx-auto d-block"><img style="width: 180px;height: 150px" src="{{ supportCase.imageUrl }}" alt="Not Loaded"></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 {% endblock %}

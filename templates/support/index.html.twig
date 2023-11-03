@@ -3,30 +3,28 @@
 {% block title %}Support Portal{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <table class="table table-striped align-middle">
-                <thead>
+    <div class="row">
+        <table class="table table-striped align-middle">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Summary</th>
+                <th>Screenshot</th>
+                <th>Description</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            {% for supportCase in supportCases %}
                 <tr>
-                    <th>Id</th>
-                    <th>Summary</th>
-                    <th>Screenshot</th>
-                    <th>Description</th>
-                    <th>Status</th>
+                    <th><a href="{{ path('get_support_case', {id: supportCase.id}) }}">{{ supportCase.id }}</th>
+                    <td>{{ supportCase.summary }}</td>
+                    <td class="rounded mx-auto d-block"><img style="width: 100px;height: 100px" src="{{ supportCase.imageUrl }}" alt="Not Loaded"></td>
+                    <td>{{ supportCase.description }}</td>
+                    <td>{{ supportCase.status.value }}</td>
                 </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                {% for supportCase in supportCases %}
-                    <tr>
-                        <th><a href="{{ path('get_support_case', {id: supportCase.id}) }}">{{ supportCase.id }}</th>
-                        <td>{{ supportCase.summary }}</td>
-                        <td class="rounded mx-auto d-block"><img style="width: 100px;height: 100px" src="{{ supportCase.imageUrl }}" alt="Not Loaded"></td>
-                        <td>{{ supportCase.description }}</td>
-                        <td>{{ supportCase.status.value }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}

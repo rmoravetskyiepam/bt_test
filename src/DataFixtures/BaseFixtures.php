@@ -36,7 +36,6 @@ class BaseFixtures extends Fixture
     private function createUser(): User
     {
         return (new User())->setEmail('testKing@test.test')
-            ->setUsername('kratos88')
             ->setPassword('super_secret_password');
     }
 
