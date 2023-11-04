@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Support Case{% endblock %}
+
+{% block body %}
+    <h1 class="h3 mb-3 font-weight-normal">Create Support Case</h1>
+
+    {{ form_errors(createCaseForm) }}
+
+    {{ form(createCaseForm) }}
+{% endblock %}

@@ -24,11 +24,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ path('app_support') }}">Support Cases</a>
-                    </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
+                        <a class="nav-link" href="{{ path('support_cases') }}">Support Cases</a>
                     </li>
                     {% if app.user %}
                         <li class="nav-item">
