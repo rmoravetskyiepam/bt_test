@@ -18,9 +18,18 @@
                 <td>{{ supportCase.summary }}</td>
                 <td>{{ supportCase.description }}</td>
                 <td>{{ supportCase.status.value }}</td>
-                <td class="rounded mx-auto d-block"><img style="width: 180px;height: 150px" src="{{ supportCase.imageUrl }}" alt="Not Loaded"></td>
+                <td class="rounded mx-auto d-block"><img style="width: 180px;height: 150px"
+                                                         src="{{ supportCase.imageUrl }}" alt="Not Loaded"></td>
             </tr>
             </tbody>
         </table>
     </div>
+    {% if statuses is not empty %}
+        <div class="btn-block">
+            {% for key, status in statuses %}
+                <a href="{{ path('change_support_case_status', {id: supportCase.id, status: status}) }}"
+                   class="mt-1 ml-1 btn btn-info">"{{ key }}"</a>
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}

@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\SupportCase;
 use App\Entity\User;
+use App\Entity\SupportCase;
+use App\Service\ImageService;
+use App\Entity\Enum\StatusType;
 use App\Form\CreateCaseFormType;
 use App\Repository\SupportCaseRepository;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class IndexController extends AbstractController
 {
     public function __construct(
-        private readonly LoggerInterface       $logger,
+        private readonly ImageService          $imageService,
         private readonly SupportCaseRepository $supportCaseRepository
     )
     {
@@ -25,9 +25,14 @@ class IndexController extends AbstractController
     #[Route('/cases', name: 'support_cases', methods: Request::METHOD_GET)]
     public function indexAction(): Response
     {
-        return $this->render('support/index.html.twig', [
-            'supportCases' => $this->supportCaseRepository->findBy([],['id' => 'DESC']),
-        ]);
+        /**@var User $user **/
+        $user = $this->getUser();
+        $searchCriteria = !in_array(User::SUPPORT_SPECIALIST_ROLE, $user->getRoles()) ? ['creator' => $user] : [];
+
+        return $this->render(
+            'support/index.html.twig',
+            ['supportCases' => $this->supportCaseRepository->findBy($searchCriteria, ['id' => 'DESC'])]
+        );
     }
 
     #[Route('/cases/create', name: 'create_support_case', methods: [Request::METHOD_POST, Request::METHOD_GET])]
@@ -40,25 +45,18 @@ class IndexController extends AbstractController
             $user = $this->getUser();
             /**@var SupportCase $newCase **/
             $newCase = $form->getData();
-            $newCase->setCreator($user);
 
             $uploadedFile = $form['imageFile']->getData();
             if(!empty($uploadedFile)) {
-                $destination = $this->getParameter('kernel.project_dir') . '/public/images';
-                $newFilename = $user->getId() . uniqid() . '.' . $uploadedFile->guessExtension();
-                try {
-                    $uploadedFile->move(
-                        $destination,
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    $this->logger->error('ImageUpload: ' . $e->getMessage());
+                $imagePath = $this->imageService->uploadImage($uploadedFile, $user->getId());
+                if(empty($imagePath)) {
                     return new Response('Image Upload Failed.');
                 }
 
-                $newCase->setImageUrl('/images/' . $newFilename);
+                $newCase->setImageUrl($imagePath);
             }
 
+            $newCase->setCreator($user);
             $this->supportCaseRepository->save($newCase, true);
 
             return $this->redirectToRoute('support_cases');
@@ -70,8 +68,32 @@ class IndexController extends AbstractController
     #[Route('/cases/{id}', name: 'get_support_case', methods: Request::METHOD_GET)]
     public function getCaseAction(SupportCase $supportCase): Response
     {
+        /**@var User $user **/
+        $user = $this->getUser();
+
+        if(in_array(User::SUPPORT_SPECIALIST_ROLE, $user->getRoles())) {
+            $statuses = StatusType::arrayFormat();
+        }
+
         return $this->render('support/case.html.twig', [
             'supportCase' => $supportCase,
+            'statuses' => $statuses ?? null
+        ]);
+    }
+
+    #[Route('/change-status/{id}/{status}', name: 'change_support_case_status', methods: [Request::METHOD_GET])]
+    public function changeCaseStatusAction(SupportCase $supportCase, string $status): Response
+    {
+        try {
+            $supportCase->setStatus($status);
+            $this->supportCaseRepository->save($supportCase, true);
+        } catch (\Throwable $e) {
+            return new Response($e->getMessage(), Response::HTTP_FORBIDDEN);
+        }
+
+        return $this->render('support/case.html.twig', [
+            'supportCase' => $supportCase,
+            'statuses' => StatusType::arrayFormat()
         ]);
     }
 

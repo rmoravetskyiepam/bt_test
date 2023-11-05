@@ -104,7 +104,7 @@ class SupportCase
                 }
             }
 
-            throw new \InvalidArgumentException('Status doesn\'t exist in enum.');
+            throw new \InvalidArgumentException('Such status doesn\'t exist.');
         }
 
         $this->status = $status;
