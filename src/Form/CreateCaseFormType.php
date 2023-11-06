@@ -3,9 +3,7 @@
 namespace App\Form;
 
 use App\Entity\SupportCase;
-use App\Entity\Enum\StatusType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -66,7 +64,6 @@ class CreateCaseFormType extends AbstractType
                     ]),
                 ]
             ])
-//            ->add('status', EnumType::class, ['class' => StatusType::class])
             ->add('imageFile', FileType::class, ['required' => false, 'mapped' => false])
             ->add('submit', SubmitType::class, ['attr' => ['class' => 'btn btn-primary']]);
     }

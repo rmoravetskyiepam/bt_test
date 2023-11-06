@@ -10,7 +10,6 @@
     {% endblock %}
 
     {% block javascripts %}
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     {% endblock %}
 </head>
@@ -28,6 +27,11 @@
                         <a class="nav-link" href="{{ path('support_cases') }}">Support Cases</a>
                     </li>
                     {% if app.user %}
+                        {% if manager_role_name in app.user.roles %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('analytics') }}">Analytics</a>
+                            </li>
+                        {% endif %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_logout') }}">Logout <span
                                     class="sr-only">({{ app.user.email }})</span></a>

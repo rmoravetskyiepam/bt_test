@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Analytics{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <table class="table table-striped align-middle">
+            <thead>
+            <tr>
+                <th>Support Cases Amount</th>
+                <th>Open</th>
+                <th>In Progress</th>
+                <th>Fixed</th>
+                <th>Won't Fix</th>
+                <th>Canceled</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            <tr>
+                <td>{{ analytics.all }}</td>
+                <td>{{ analytics.open }}</td>
+                <td>{{ analytics.in_progress }}</td>
+                <td>{{ analytics.fixed }}</td>
+                <td>{{ analytics.wont_fix }}</td>
+                <td>{{ analytics.canceled }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

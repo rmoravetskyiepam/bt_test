@@ -21,6 +21,17 @@ class SupportCaseRepository extends ServiceEntityRepository
         parent::__construct($registry, SupportCase::class);
     }
 
+    public function getAmountOfCasesByStatus(?string $statusName = null): int
+    {
+        $builder = $this->createQueryBuilder('sc');
+
+        if(!empty($statusName)) {
+            $builder->where($builder->expr()->in('sc.status', ':statusName'))
+                ->setParameter('statusName', $statusName);
+        }
+        return $builder->select('COUNT(sc.id)')->getQuery()->getSingleScalarResult();
+    }
+
     public function save(SupportCase $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

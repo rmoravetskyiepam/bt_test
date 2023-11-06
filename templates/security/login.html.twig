@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Log in!{% endblock %}
+
 {% block navigation %}{% endblock %}
+
 {% block body %}
     <form method="post" action="{{ path('app_login') }}">
         {% if error %}
@@ -32,8 +34,6 @@
         </button>
     </form>
 
-    <a class="mt-1 btn btn-primary" href="{{ path('app_register') }}">
-        Register
-    </a>
+    <a class="mt-1 btn btn-primary" href="{{ path('app_register') }}">Register</a>
 
 {% endblock %}

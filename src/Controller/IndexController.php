@@ -8,6 +8,7 @@ use App\Service\ImageService;
 use App\Entity\Enum\StatusType;
 use App\Form\CreateCaseFormType;
 use App\Repository\SupportCaseRepository;
+use App\Service\SupportCaseService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,10 +18,10 @@ class IndexController extends AbstractController
 {
     public function __construct(
         private readonly ImageService          $imageService,
+        private readonly SupportCaseService    $supportCaseService,
         private readonly SupportCaseRepository $supportCaseRepository
     )
-    {
-    }
+    {}
 
     #[Route('/cases', name: 'support_cases', methods: Request::METHOD_GET)]
     public function indexAction(): Response
@@ -35,16 +36,12 @@ class IndexController extends AbstractController
         );
     }
 
-    #[Route('/manager/analytic', name: 'analytic', methods: Request::METHOD_GET)]
+    #[Route('/manager/analytic', name: 'analytics', methods: Request::METHOD_GET)]
     public function statisticAction(): Response
     {
-        /**@var User $user **/
-        $user = $this->getUser();
-        $searchCriteria = !in_array(User::SUPPORT_SPECIALIST_ROLE, $user->getRoles()) ? ['creator' => $user] : [];
-
         return $this->render(
-            'support/index.html.twig',
-            ['supportCases' => $this->supportCaseRepository->findBy($searchCriteria, ['id' => 'DESC'])]
+            'support/analytics.html.twig',
+            ['analytics' => $this->supportCaseService->getFullSupportCaseAnalyticData()]
         );
     }
 
@@ -81,16 +78,11 @@ class IndexController extends AbstractController
     #[Route('/cases/{id}', name: 'get_support_case', methods: Request::METHOD_GET)]
     public function getCaseAction(SupportCase $supportCase): Response
     {
-        /**@var User $user **/
-        $user = $this->getUser();
-
-        if(in_array(User::SUPPORT_SPECIALIST_ROLE, $user->getRoles())) {
-            $statuses = StatusType::arrayFormat();
-        }
-
         return $this->render('support/case.html.twig', [
             'supportCase' => $supportCase,
-            'statuses' => $statuses ?? null
+            'statuses' => in_array(User::SUPPORT_SPECIALIST_ROLE, $this->getUser()->getRoles())
+                ? StatusType::arrayFormat()
+                : null
         ]);
     }
 

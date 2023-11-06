@@ -2,6 +2,8 @@
 
 {% block title %}Register{% endblock %}
 
+{% block navigation %}{% endblock %}
+
 {% block body %}
     <h1 class="h3 mb-3 font-weight-normal">Register</h1>
 
@@ -13,4 +15,6 @@
 
         <button type="submit" class="btn btn-primary">Submit</button>
     {{ form_end(registrationForm) }}
+
+    <a class="mt-1 btn btn-primary" href="{{ path('app_login') }}">Login</a>
 {% endblock %}

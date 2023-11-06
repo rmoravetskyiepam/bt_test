@@ -28,7 +28,7 @@
         <div class="btn-block">
             {% for key, status in statuses %}
                 <a href="{{ path('change_support_case_status', {id: supportCase.id, status: status}) }}"
-                   class="mt-1 ml-1 btn btn-info">"{{ key }}"</a>
+                   class="mt-1 ml-1 btn {% if status == supportCase.status.value %}btn-primary{% else %}btn-info{% endif %}">"{{ key }}"</a>
             {% endfor %}
         </div>
     {% endif %}
