@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,8 +13,12 @@ class SecurityController extends AbstractController
     #[Route(path: '/', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('support_cases');
+        /**@var User $user **/
+        $user = $this->getUser();
+        if ($user) {
+            $redirectRoute =  in_array(User::SUPPORT_MANAGER_ROLE, $user->getRoles())
+                ? 'support_cases' : 'analytic';
+            return $this->redirectToRoute($redirectRoute);
         }
 
         // get the login error if there is one

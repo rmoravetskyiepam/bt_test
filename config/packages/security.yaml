@@ -33,6 +33,7 @@ security:
          - { path: ^/cases, roles: [ROLE_USER, ROLE_SUPPORT_SPECIALIST] }
          - { path: ^/cases/create, roles: [ROLE_USER] }
          - { path: ^/change-status, roles: [ROLE_SUPPORT_SPECIALIST] }
+         - { path: ^//manager, roles: [ROLE_SUPPORT_MANAGER] }
 
 when@test:
     security:

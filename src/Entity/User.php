@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     const USER_ROLE = 'ROLE_USER';
+    const SUPPORT_MANAGER_ROLE = 'ROLE_SUPPORT_MANAGER';
     const SUPPORT_SPECIALIST_ROLE = 'ROLE_SUPPORT_SPECIALIST';
 
     #[ORM\Id]

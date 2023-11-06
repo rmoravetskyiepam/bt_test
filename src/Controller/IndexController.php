@@ -35,6 +35,19 @@ class IndexController extends AbstractController
         );
     }
 
+    #[Route('/manager/analytic', name: 'analytic', methods: Request::METHOD_GET)]
+    public function statisticAction(): Response
+    {
+        /**@var User $user **/
+        $user = $this->getUser();
+        $searchCriteria = !in_array(User::SUPPORT_SPECIALIST_ROLE, $user->getRoles()) ? ['creator' => $user] : [];
+
+        return $this->render(
+            'support/index.html.twig',
+            ['supportCases' => $this->supportCaseRepository->findBy($searchCriteria, ['id' => 'DESC'])]
+        );
+    }
+
     #[Route('/cases/create', name: 'create_support_case', methods: [Request::METHOD_POST, Request::METHOD_GET])]
     public function createCaseAction(Request $request): Response
     {
