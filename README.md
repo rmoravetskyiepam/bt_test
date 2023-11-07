@@ -6,6 +6,7 @@
 4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
 5. Run `docker compose down --remove-orphans` to stop the Docker containers.
 6. Create `.env` file and fill it with data from `.env.dev.example`. For unix: `cp .env.dev.example .env`
-7. To load fixtures: `./bin/console doctrine:fixtures:load`
+7. To run migrations: `./bin/console doctrine:migrations:migrate`. That step is needed to create DB tables.
+8. To load fixtures: `./bin/console doctrine:fixtures:load`
 
 **Enjoy!**
